@@ -48,7 +48,7 @@ def getContainers(sa):
     containers = json.loads(a)
 
     for container in containers:
-        blobs = getBlobs(ac, container['name'])
+        blobs = getBlobs(sa, container['name'])
         container['blobs'] = blobs
 
     return containers
@@ -96,6 +96,9 @@ subscriptions = json.loads(a)
 # list with all flavours
 listsizes = getListSizes()
 
+colDisks = []
+colSas = []
+colVms = []
 
 for s in subscriptions:
 
@@ -108,7 +111,19 @@ for s in subscriptions:
     s['vms'] = vms
     s['date'] = fdate
 
+    colDisks.extend(disks)
+    colSas.extend(storageaccounts)
+    colVms.extend(vms)
+
     # es.index(index='subscription', doc_type='subscri', body=s)
     with open('subs.json', 'w') as outfile:
         json.dump(subscriptions, outfile)
 
+    with open('disks.json', 'w') as outfile:
+        json.dump(subscriptions, outfile)
+
+    with open('sas.json', 'w') as outfile:
+        json.dump(subscriptions, outfile)
+
+    with open('vms.json', 'w') as outfile:
+        json.dump(subscriptions, outfile)
