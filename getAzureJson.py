@@ -79,7 +79,9 @@ def getVms(subscription, fdate):
     for vm in vms:
         vm['date'] = fdate
         vm['flavour'] = utils.retFirstVal(listsizes, 'name', vm['hardwareProfile']['vmSize'])
-        vm['subscription'] = vm
+        vm['subscription'] = subscription
+
+    return vms
 
 
 
@@ -104,9 +106,14 @@ for s in subscriptions:
 
     a = os.popen('az account set -s ' + s['id']).read()
 
-    disks = getDisks(s, fdate)
-    storageaccounts = getStorageAccs(s, fdate)
-    vms = getVms(s, fdate)
+    print "Subscricao: " + s['name']
+
+    print "Discos"
+    disks = getDisks(s['name'], fdate)
+    print "Storage Accounts"
+    storageaccounts = getStorageAccs(s['name'], fdate)
+    print "Vms"
+    vms = getVms(s['name'], fdate)
 
     s['vms'] = vms
     s['date'] = fdate
@@ -115,15 +122,14 @@ for s in subscriptions:
     colSas.extend(storageaccounts)
     colVms.extend(vms)
 
-    # es.index(index='subscription', doc_type='subscri', body=s)
     with open('subs.json', 'w') as outfile:
         json.dump(subscriptions, outfile)
 
     with open('disks.json', 'w') as outfile:
-        json.dump(subscriptions, outfile)
+        json.dump(colDisks, outfile)
 
     with open('sas.json', 'w') as outfile:
-        json.dump(subscriptions, outfile)
+        json.dump(colSas, outfile)
 
     with open('vms.json', 'w') as outfile:
-        json.dump(subscriptions, outfile)
+        json.dump(colVms, outfile)
