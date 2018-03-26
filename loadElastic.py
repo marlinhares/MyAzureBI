@@ -13,10 +13,10 @@ def loadElastic(dicts, index_name, doc_type_name):
     es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
     for dic in dicts:
 
-        try:
-            if(dic['subscription']['name'] == 'Microsoft Azure Sponsorship(Converted to EA)' and dic['name']=='armazem'): continue
-        except:
-            pass
+        #try:
+        #    if(dic['subscription']['name'] == 'Microsoft Azure Sponsorship(Converted to EA)' and dic['name']=='armazem'): continue
+        #except:
+        #    pass
 
         #print dic['subscription']['name'] + ' - ' + dic['name']
         es.index(index=index_name, doc_type=doc_type_name, body=dic, request_timeout=120)
